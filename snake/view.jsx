@@ -16,8 +16,16 @@ class View extends React.Component {
     this.setState({game: new Game(this)})
   }
 
+  localStorageScore () {
+    if (!localStorage.snakeHighScore || localStorage.snakeHighScore < this.state.game.score) {
+      localStorage.snakeHighScore = this.state.game.score
+    }
+  }
+
 
   render() {
+    this.localStorageScore()
+
     let board = this.state.game.board.grid.map((row, rowidx) => {
       let units = row.map((unit, colidx) => {
           let snakeClass = undefined

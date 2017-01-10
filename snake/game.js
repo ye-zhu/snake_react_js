@@ -71,9 +71,6 @@ class Game {
       this.pauseGame();
     }
 
-    if (!window.localStorage.snakeHighScore || window.localStorage.snakeHighScore < this.score) {
-      window.localStorage.snakeHighScore = this.score
-    }
   }
 
   makeFruit (getFruit) {

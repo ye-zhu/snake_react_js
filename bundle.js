@@ -96,9 +96,18 @@
 	      this.setState({ game: new _game2.default(this) });
 	    }
 	  }, {
+	    key: 'localStorageScore',
+	    value: function localStorageScore() {
+	      if (!localStorage.snakeHighScore || localStorage.snakeHighScore < this.state.game.score) {
+	        localStorage.snakeHighScore = this.state.game.score;
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
+
+	      this.localStorageScore();
 
 	      var board = this.state.game.board.grid.map(function (row, rowidx) {
 	        var units = row.map(function (unit, colidx) {
@@ -142,7 +151,7 @@
 	          newGame: this.makeNewGame.bind(this),
 	          pause: this.state.game.pauseGame.bind(this.state.game),
 	          score: this.state.game.score,
-	          topScore: localStorage.snakeHighScore,
+	          topScore: window.localStorage.snakeHighScore,
 	          lost: this.state.game.lost
 	        })
 	      );
@@ -19958,10 +19967,6 @@
 	      if (snakeHead[0] > 12 || snakeHead[0] < 0 || snakeHead[1] > 24 || snakeHead[1] < 0) {
 	        this.lost = "wall";
 	        this.pauseGame();
-	      }
-
-	      if (localStorage.snakeHighScore < this.score) {
-	        localStorage.snakeHighScore = this.score;
 	      }
 	    }
 	  }, {
