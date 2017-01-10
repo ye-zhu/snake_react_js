@@ -31,11 +31,12 @@ body {
 }
 
 .bottompanel {
+  opacity: .75;
   background-image: url("./assets/bottom.jpg");
   background-size: 1300px 300px;
   background-position: bottom;
   width: 1030px;
-  height: 100px;
+  height: 105px;
   border-radius: 4px;
 }
 
@@ -54,11 +55,10 @@ body {
   background-position: top;
   padding: 15px;
   width: 1000px;
-  font-size: 18px;
+  font-size: 16.5px;
 }
 
 .button {
-  opacity: .75;
   width: 130px;
   border-radius: 4px;
   margin: 5px;
@@ -70,6 +70,7 @@ body {
 .p1 {
   color: red;
   font-size: 20px;
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
 .restart {

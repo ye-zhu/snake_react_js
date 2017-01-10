@@ -70,6 +70,10 @@ class Game {
       this.lost = "wall";
       this.pauseGame();
     }
+
+    if (localStorage.snakeHighScore < this.score) {
+      localStorage.snakeHighScore = this.score
+    }
   }
 
   makeFruit (getFruit) {

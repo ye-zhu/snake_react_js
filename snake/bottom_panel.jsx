@@ -21,7 +21,7 @@ class BottomPanel extends React.Component {
           <button className="button pause" key="pause" onClick={this.props.pause}>Pause</button>
           <div>{printText}</div>
         </div>
-        <div className="bottom lower">It's exactly like <span className="p1">&nbsp;SNAKE</span>, except it's called <span className="p1">&nbsp;CATERPILLAR</span>!!!  w = ▲ | s = ▼ | a = ◀ | d = ▶ </div>
+        <div className="bottom lower">It's exactly like <span className="p1">&nbsp;SNAKE</span>, except it's called <span className="p1">&nbsp;CATERPILLAR</span>!!!&nbsp;<span className="p1">w = ▲ | s = ▼ | a = ◀ | d = ▶ </span></div>
       </div>
     )
   }

@@ -9,15 +9,10 @@ class View extends React.Component {
     super(props)
     this.state = {
       game: new Game(this),
-      topScore: 0
     }
   }
 
   makeNewGame () {
-    this.state.game.snake.pos = this.state.game.snake.startpos;
-    if (this.state.game.score > this.state.topScore) {
-      this.state.topScore = this.state.game.score
-    }
     this.setState({game: new Game(this)})
   }
 
@@ -68,7 +63,7 @@ class View extends React.Component {
                      newGame={this.makeNewGame.bind(this)}
                      pause={this.state.game.pauseGame.bind(this.state.game)}
                      score={this.state.game.score}
-                     topScore={this.state.topScore}
+                     topScore={localStorage.snakeHighScore}
                      lost={this.state.game.lost}
         />
       </div>

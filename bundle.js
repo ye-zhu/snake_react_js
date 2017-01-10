@@ -85,8 +85,7 @@
 	    var _this = _possibleConstructorReturn(this, (View.__proto__ || Object.getPrototypeOf(View)).call(this, props));
 
 	    _this.state = {
-	      game: new _game2.default(_this),
-	      topScore: 0
+	      game: new _game2.default(_this)
 	    };
 	    return _this;
 	  }
@@ -94,10 +93,6 @@
 	  _createClass(View, [{
 	    key: 'makeNewGame',
 	    value: function makeNewGame() {
-	      this.state.game.snake.pos = this.state.game.snake.startpos;
-	      if (this.state.game.score > this.state.topScore) {
-	        this.state.topScore = this.state.game.score;
-	      }
 	      this.setState({ game: new _game2.default(this) });
 	    }
 	  }, {
@@ -147,7 +142,7 @@
 	          newGame: this.makeNewGame.bind(this),
 	          pause: this.state.game.pauseGame.bind(this.state.game),
 	          score: this.state.game.score,
-	          topScore: this.state.topScore,
+	          topScore: localStorage.snakeHighScore,
 	          lost: this.state.game.lost
 	        })
 	      );
@@ -19964,6 +19959,10 @@
 	        this.lost = "wall";
 	        this.pauseGame();
 	      }
+
+	      if (localStorage.snakeHighScore < this.score) {
+	        localStorage.snakeHighScore = this.score;
+	      }
 	    }
 	  }, {
 	    key: 'makeFruit',
@@ -20204,7 +20203,12 @@
 	            { className: 'p1' },
 	            '\xA0CATERPILLAR'
 	          ),
-	          '!!!  w = \u25B2 | s = \u25BC | a = \u25C0 | d = \u25B6 '
+	          '!!!\xA0',
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'p1' },
+	            'w = \u25B2 | s = \u25BC | a = \u25C0 | d = \u25B6 '
+	          )
 	        )
 	      );
 	    }
