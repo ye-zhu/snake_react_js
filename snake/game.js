@@ -8,7 +8,7 @@ const DELTAS = {
   'a': [0,-1],
 }
 
-const FRUITTYPE = ["cat", "flower", "peace", "orange", "heart"]
+const FRUITTYPE = ["cat", "flower", "peace", "orange", "heart", "mushroom"]
 
 class Game {
   constructor (view) {

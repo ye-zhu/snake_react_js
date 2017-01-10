@@ -114,6 +114,12 @@ body {
   border-radius: 0px;
 }
 
+.mushroom {
+  background-image: url("./assets/mushroom.png");
+  background-size: 40px 40px;
+  border-radius: 0px;
+}
+
 .flower {
   background-image: url("./assets/flower.png");
   background-size: 45px 45px;

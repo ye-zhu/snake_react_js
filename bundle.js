@@ -19897,7 +19897,7 @@
 	  'a': [0, -1]
 	};
 
-	var FRUITTYPE = ["cat", "flower", "peace", "orange", "heart"];
+	var FRUITTYPE = ["cat", "flower", "peace", "orange", "heart", "mushroom"];
 
 	var Game = function () {
 	  function Game(view) {
