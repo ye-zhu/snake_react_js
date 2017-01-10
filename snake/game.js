@@ -71,7 +71,7 @@ class Game {
       this.pauseGame();
     }
 
-    if (localStorage.snakeHighScore < this.score) {
+    if (!localStorage.snakeHighScore || localStorage.snakeHighScore < this.score) {
       localStorage.snakeHighScore = this.score
     }
   }
