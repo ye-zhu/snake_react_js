@@ -46,19 +46,27 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(161);
+	var _reactDom = __webpack_require__(158);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
 	var _game = __webpack_require__(159);
 
 	var _game2 = _interopRequireDefault(_game);
+
+	var _bottom_panel = __webpack_require__(162);
+
+	var _bottom_panel2 = _interopRequireDefault(_bottom_panel);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -77,12 +85,22 @@
 	    var _this = _possibleConstructorReturn(this, (View.__proto__ || Object.getPrototypeOf(View)).call(this, props));
 
 	    _this.state = {
-	      game: new _game2.default(_this)
+	      game: new _game2.default(_this),
+	      topScore: 0
 	    };
 	    return _this;
 	  }
 
 	  _createClass(View, [{
+	    key: 'makeNewGame',
+	    value: function makeNewGame() {
+	      this.state.game.snake.pos = this.state.game.snake.startpos;
+	      if (this.state.game.score > this.state.topScore) {
+	        this.state.topScore = this.state.game.score;
+	      }
+	      this.setState({ game: new _game2.default(this) });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -91,22 +109,27 @@
 	        var units = row.map(function (unit, colidx) {
 	          var snakeClass = undefined;
 	          var fruitClass = undefined;
-	          _this2.state.game.snake.pos.forEach(function (pos) {
+	          var fruitType = undefined;
+	          var snakePos = _this2.state.game.snake.pos;
+	          snakePos.forEach(function (pos) {
 	            if (pos[0] === rowidx && pos[1] === colidx) {
 	              snakeClass = "snake";
 	            }
 	          });
 
+	          if (_this2.state.game.lost === "wall" && snakePos[1][0] === rowidx && snakePos[1][1] === colidx) {
+	            snakeClass = "snake head";
+	          } else if (snakePos[0][0] === rowidx && snakePos[0][1] === colidx) {
+	            snakeClass = "snake head";
+	          }
+
 	          var fruitPos = _this2.state.game.fruit;
 	          if (fruitPos[0] === rowidx && fruitPos[1] === colidx) {
 	            fruitClass = "fruit";
+	            fruitType = _this2.state.game.fruitType;
 	          }
 
-	          return _react2.default.createElement(
-	            'div',
-	            { className: 'unit ' + snakeClass + ' ' + fruitClass, key: '' + colidx },
-	            _this2.state.game.count
-	          );
+	          return _react2.default.createElement('div', { className: 'unit ' + snakeClass + ' ' + fruitClass + ' ' + fruitType, key: '' + colidx });
 	        });
 
 	        return _react2.default.createElement(
@@ -119,13 +142,26 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        board
+	        board,
+	        _react2.default.createElement(_bottom_panel2.default, { restart: this,
+	          newGame: this.makeNewGame.bind(this),
+	          pause: this.state.game.pauseGame.bind(this.state.game),
+	          score: this.state.game.score,
+	          topScore: this.state.topScore,
+	          lost: this.state.game.lost
+	        })
 	      );
 	    }
+
+	    //End
+
 	  }]);
 
 	  return View;
 	}(_react2.default.Component);
+
+	exports.default = View;
+
 
 	document.addEventListener("DOMContentLoaded", function () {
 	  var root = document.getElementById('root');
@@ -19818,7 +19854,15 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 158 */,
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = __webpack_require__(3);
+
+
+/***/ },
 /* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -19834,7 +19878,7 @@
 
 	var _board2 = _interopRequireDefault(_board);
 
-	var _snake = __webpack_require__(162);
+	var _snake = __webpack_require__(161);
 
 	var _snake2 = _interopRequireDefault(_snake);
 
@@ -19849,6 +19893,8 @@
 	  'a': [0, -1]
 	};
 
+	var FRUITTYPE = ["cat", "flower", "peace", "orange", "heart"];
+
 	var Game = function () {
 	  function Game(view) {
 	    _classCallCheck(this, Game);
@@ -19860,11 +19906,11 @@
 	    this.currentDelta = DELTAS['a'];
 	    this.newDelta = DELTAS['a'];
 	    this.fruit;
-	    this.lost = false;
+	    this.fruitType = this.lost = false;
 	    this.eatFruit = false;
-	    this.rendering = false;
 	    this.makeFruit();
 	    this.startSnake();
+	    this.score = 0;
 	  }
 
 	  _createClass(Game, [{
@@ -19898,6 +19944,7 @@
 	        if (pos[0] === _this2.fruit[0] && pos[1] === _this2.fruit[1]) {
 	          _this2.makeFruit("getFruit");
 	          _this2.eatFruit = true;
+	          _this2.score += 100;
 	        }
 	      });
 	    }
@@ -19908,13 +19955,13 @@
 	      var snakePos = this.snake.pos;
 	      for (var i = 1; i < snakePos.length; i += 1) {
 	        if (snakePos[i][0] === snakeHead[0] && snakePos[i][1] === snakeHead[1]) {
-	          this.lost = true;
+	          this.lost = "body";
 	          this.pauseGame();
 	        }
 	      }
 
-	      if (snakeHead[0] > 11 || snakeHead[0] < 0 || snakeHead[1] > 23 || snakeHead[1] < 0) {
-	        this.lost = true;
+	      if (snakeHead[0] > 12 || snakeHead[0] < 0 || snakeHead[1] > 24 || snakeHead[1] < 0) {
+	        this.lost = "wall";
 	        this.pauseGame();
 	      }
 	    }
@@ -19922,6 +19969,7 @@
 	    key: 'makeFruit',
 	    value: function makeFruit(getFruit) {
 	      this.fruit = this.board.pos[Math.floor(Math.random() * this.board.pos.length)];
+	      this.fruitType = FRUITTYPE[Math.floor(Math.random() * FRUITTYPE.length)];
 	    }
 	  }, {
 	    key: 'startSnake',
@@ -19983,12 +20031,10 @@
 	    key: "makeBoard",
 	    value: function makeBoard() {
 	      var pos = [];
-	      var grid = Array(12).fill().map(function (row, rowidx) {
-	        return Array(24).fill().map(function (unit, colidx) {
+	      var grid = Array(13).fill().map(function (row, rowidx) {
+	        return Array(25).fill().map(function (unit, colidx) {
 	          pos.push([rowidx, colidx]);
-	          return {
-	            filled: undefined
-	          };
+	          return {};
 	        });
 	      });
 	      return [grid, pos];
@@ -20005,15 +20051,6 @@
 
 /***/ },
 /* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = __webpack_require__(3);
-
-
-/***/ },
-/* 162 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -20026,13 +20063,16 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var STARTPOS = [[5, 10], [5, 11], [5, 12], [5, 13]];
+	// const STARTPOS = [
+	//   [5,10], [5,11], [5,12], [5,13]
+	// ]
 
 	var Snake = function () {
 	  function Snake() {
 	    _classCallCheck(this, Snake);
 
-	    this.pos = STARTPOS;
+	    this.startpos = [[5, 10], [5, 11], [5, 12], [5, 13]];
+	    this.pos = this.startpos;
 	  }
 
 	  _createClass(Snake, [{
@@ -20052,6 +20092,131 @@
 	}();
 
 	exports.default = Snake;
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var BottomPanel = function (_React$Component) {
+	  _inherits(BottomPanel, _React$Component);
+
+	  function BottomPanel(props) {
+	    _classCallCheck(this, BottomPanel);
+
+	    return _possibleConstructorReturn(this, (BottomPanel.__proto__ || Object.getPrototypeOf(BottomPanel)).call(this, props));
+	  }
+
+	  _createClass(BottomPanel, [{
+	    key: 'render',
+	    value: function render() {
+	      var printText = void 0;
+	      if (this.props.lost === true) {
+	        printText = _react2.default.createElement(
+	          'div',
+	          { className: 'score' },
+	          'Game Over!!! Your Score is ',
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'p1' },
+	            '\xA0',
+	            this.props.score
+	          )
+	        );
+	      } else {
+	        printText = _react2.default.createElement(
+	          'div',
+	          { className: 'score' },
+	          'Your Top Score = ',
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'p1' },
+	            '\xA0',
+	            this.props.topScore
+	          ),
+	          ' / Your Score = ',
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'p1' },
+	            '\xA0',
+	            this.props.score
+	          )
+	        );
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'bottompanel' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'bottom' },
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'button restart', key: 'restart', onClick: this.props.newGame },
+	            'Restart'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'button pause', key: 'pause', onClick: this.props.pause },
+	            'Pause'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            printText
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'bottom lower' },
+	          'It\'s exactly like ',
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'p1' },
+	            '\xA0SNAKE'
+	          ),
+	          ', except it\'s called ',
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'p1' },
+	            '\xA0CATERPILLAR'
+	          ),
+	          '!!!  w = \u25B2 | s = \u25BC | a = \u25C0 | d = \u25B6 '
+	        )
+	      );
+	    }
+
+	    //End
+
+	  }]);
+
+	  return BottomPanel;
+	}(_react2.default.Component);
+
+	exports.default = BottomPanel;
 
 /***/ }
 /******/ ]);

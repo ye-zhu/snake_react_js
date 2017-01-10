@@ -7,11 +7,10 @@ class Board {
 
   makeBoard () {
     let pos = []
-    let grid = Array(12).fill().map((row, rowidx) => {
-      return Array(24).fill().map((unit, colidx) =>{
+    let grid = Array(13).fill().map((row, rowidx) => {
+      return Array(25).fill().map((unit, colidx) =>{
         pos.push([rowidx, colidx])
         return {
-          filled: undefined
         }
       })
     })

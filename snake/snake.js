@@ -1,10 +1,11 @@
-const STARTPOS = [
-  [5,10], [5,11], [5,12], [5,13]
-]
+// const STARTPOS = [
+//   [5,10], [5,11], [5,12], [5,13]
+// ]
 
 class Snake {
   constructor () {
-    this.pos = STARTPOS
+    this.startpos = [[5,10], [5,11], [5,12], [5,13]]
+    this.pos = this.startpos
   }
 
   moveSnake (delta, fromFruit) {
