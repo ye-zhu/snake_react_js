@@ -63,7 +63,7 @@ class View extends React.Component {
                      newGame={this.makeNewGame.bind(this)}
                      pause={this.state.game.pauseGame.bind(this.state.game)}
                      score={this.state.game.score}
-                     topScore={localStorage.snakeHighScore}
+                     topScore={window.localStorage.snakeHighScore}
                      lost={this.state.game.lost}
         />
       </div>

@@ -71,8 +71,8 @@ class Game {
       this.pauseGame();
     }
 
-    if (!localStorage.snakeHighScore || localStorage.snakeHighScore < this.score) {
-      localStorage.snakeHighScore = this.score
+    if (!window.localStorage.snakeHighScore || window.localStorage.snakeHighScore < this.score) {
+      window.localStorage.snakeHighScore = this.score
     }
   }
 
