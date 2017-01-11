@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 class BottomPanel extends React.Component {
   constructor (props) {
     super(props)
+    this.gamepause = "Pause"
   }
 
   render () {

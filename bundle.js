@@ -20131,7 +20131,10 @@
 	  function BottomPanel(props) {
 	    _classCallCheck(this, BottomPanel);
 
-	    return _possibleConstructorReturn(this, (BottomPanel.__proto__ || Object.getPrototypeOf(BottomPanel)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (BottomPanel.__proto__ || Object.getPrototypeOf(BottomPanel)).call(this, props));
+
+	    _this.gamepause = "Pause";
+	    return _this;
 	  }
 
 	  _createClass(BottomPanel, [{
