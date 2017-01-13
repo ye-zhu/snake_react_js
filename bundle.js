@@ -19926,6 +19926,7 @@
 	        if (DELTAS[e.key]) {
 	          _this.newDelta = DELTAS[e.key];
 	        } else if (e.keyCode == 32) {
+	          e.preventDefault();
 	          _this.pauseGame();
 	        }
 	      });

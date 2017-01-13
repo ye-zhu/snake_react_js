@@ -31,7 +31,8 @@ class Game {
     document.addEventListener('keydown', (e) => {
       if (DELTAS[e.key]) {
         this.newDelta = DELTAS[e.key]
-      } else if (e.keyCode == 32 || e.key === 'g') {
+      } else if (e.keyCode == 32) {
+        e.preventDefault();
         this.pauseGame()
       }
     })
