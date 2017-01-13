@@ -19925,7 +19925,7 @@
 	      document.addEventListener('keydown', function (e) {
 	        if (DELTAS[e.key]) {
 	          _this.newDelta = DELTAS[e.key];
-	        } else if (e.key === 'g') {
+	        } else if (e.keyCode == 32) {
 	          _this.pauseGame();
 	        }
 	      });
